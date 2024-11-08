@@ -16,8 +16,17 @@ const (
 	INT   = "INT"
 
 	// Operators
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
+	LT       = "<"
+	GT       = ">"
+
+	EQ     = "=="
+	NOT_EQ = "!="
 
 	// Delimiters
 	COMMA     = ","
@@ -33,15 +42,19 @@ const (
 	IF       = "IF"
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
 )
 
 // keywords is a map to check if a literal is a keyword and get its TokenType
 var keywords = map[string]TokenType{
-	"fn":     FUNCTION, // A function keyword
-	"let":    LET,      // A variable declaration keyword
-	"if":     IF,       // A conditional keyword
-	"else":   ELSE,     // A conditional keyword
-	"return": RETURN,   // A return keyword
+	"fn":     FUNCTION,
+	"let":    LET,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
+	"return": RETURN,
 }
 
 // LookupIdent checks if an identifier is a keyword or a user-defined identifier
