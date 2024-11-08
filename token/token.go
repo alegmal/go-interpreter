@@ -30,4 +30,24 @@ const (
 	// Keywords
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
+
+// keywords is a map to check if a literal is a keyword and get its TokenType
+var keywords = map[string]TokenType{
+	"fn":     FUNCTION, // A function keyword
+	"let":    LET,      // A variable declaration keyword
+	"if":     IF,       // A conditional keyword
+	"else":   ELSE,     // A conditional keyword
+	"return": RETURN,   // A return keyword
+}
+
+// LookupIdent checks if an identifier is a keyword or a user-defined identifier
+func LookupIdent(ident string) TokenType {
+	if tok, ok := keywords[ident]; ok {
+		return tok // It's a keyword
+	}
+	return IDENT // Otherwise, it's an identifier
+}
