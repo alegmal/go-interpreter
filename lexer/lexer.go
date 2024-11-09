@@ -32,24 +32,39 @@ func newToken(tokenType token.TokenType, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
+func makeTwoCharToken(tokenType token.TokenType, literal string) token.Token {
+	return token.Token{Type: tokenType, Literal: literal}
+}
+
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
 	l.skipWhitespace()
-
 	switch l.ch {
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		if l.peekChar() == '=' {
+			tok = makeTwoCharToken(token.EQ, "==")
+			l.readChar()
+		} else {
+			tok = newToken(token.ASSIGN, l.ch)
+		}
 	case '-':
 		tok = newToken(token.MINUS, l.ch)
 	case '!':
-		tok = newToken(token.BANG, l.ch)
+		if l.peekChar() == '=' {
+			tok = makeTwoCharToken(token.NOT_EQ, "!=")
+			l.readChar()
+		} else {
+			tok = newToken(token.BANG, l.ch)
+		}
 	case '/':
 		tok = newToken(token.SLASH, l.ch)
 	case '*':
 		tok = newToken(token.ASTERISK, l.ch)
 	case '<':
 		tok = newToken(token.LT, l.ch)
+	case ';':
+		tok = newToken(token.SEMICOLON, l.ch)
 	case '>':
 		tok = newToken(token.GT, l.ch)
 	case '(':
@@ -85,6 +100,14 @@ func (l *Lexer) NextToken() token.Token {
 	l.readChar()
 
 	return tok
+}
+
+func (l *Lexer) peekChar() byte {
+	if l.nextPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.nextPosition]
+	}
 }
 
 func isLetter(ch byte) bool {
